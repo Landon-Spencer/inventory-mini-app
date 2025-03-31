@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Routes, Route, Link, useNavigate} from 'react-router-dom';
+import Button from '@mui/material/Button';
 import All from './components/All';
 import './App.css';
 import ChangeContext from './components/ChangeContext.jsx';
@@ -14,10 +15,10 @@ function App() {
     <ChangeContext.Provider value={value}>
       <h1>Store Front</h1>
       <nav>
-        <button onClick={() => navigate('/')}>All Items</button>
-        <button onClick={() => navigate('/')}>Meat</button>
-        <button onClick={() => navigate('/')}>Produce</button>
-        <button onClick={() => navigate('/')}>Dairy</button>
+        <Button variant="contained" onClick={() => navigate('/')}>All Items</Button>
+        <Button variant="contained" onClick={() => navigate('/')}>Meat</Button>
+        <Button variant="contained" onClick={() => navigate('/')}>Produce</Button>
+        <Button variant="contained" onClick={() => navigate('/')}>Dairy</Button>
       </nav>
       <Routes>
         <Route path='/' element={<All/>}/>

@@ -65,7 +65,24 @@ app.patch(`/items/:id`, (req, res) => {
         message: 'Could not update item inventory.'
       })
     })
+})
 
+app.post('/items', (req, res) => {
+  const { name, department_id, inventory } = req.body;
+
+  const newItem = {
+    name: name,
+    department_id: department_id,
+    inventory: inventory
+  };
+
+  knex('items')
+   .insert(newItem)
+   .then(res.status(201).json(`${newItem.name} was added to the database!`))
+   .catch(err => {
+    console.log(err);
+    res.status(404).json(`Could not add ${newItem.name} to the database :(`)
+   })
 })
 
 app.listen(port, ()=> {
