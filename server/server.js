@@ -40,6 +40,31 @@ app.get('/items{/:id}', (req, res) => {
     });
 })
 
+app.get('/department/:id', (req, res) => {
+  const departmentId = req.params.id;
+  knex('items')
+    .join('departments', 'items.department_id', '=', 'departments.id')
+    .select(
+      'items.id',
+      'items.name',
+      'items.department_id',
+      'departments.name as department',
+      'items.inventory as inventory',
+      'items.created_at',
+      'items.updated_at'
+    )
+    .where('items.department_id', '=', departmentId)
+    .orderBy('items.id')
+    .then(data => res.status(200).json(data))
+    .catch(err => {
+      console.log(`Error:`, err)
+      res.status(404).json({
+        message:
+          'The items you are looking for could not be found. Please try again'
+      })
+    });
+})
+
 app.patch(`/items/:id`, (req, res) => {
   const itemId = req.params.id;
   const updates = req.body;
@@ -83,6 +108,25 @@ app.post('/items', (req, res) => {
     console.log(err);
     res.status(404).json(`Could not add ${newItem.name} to the database :(`)
    })
+})
+
+app.delete(`/items/:id`, (req, res) => {
+  const itemId = req.params.id;
+
+  knex('items')
+    .where({id: itemId})
+    .delete()
+    .returning('*')
+    .then(records => {
+      if (records.length === 0) {
+        res.status(404).json('Item not found.')
+    }
+    res.status(200).json('Item deleted successfully.')
+    })
+  .catch(err => {
+      console.log(err);
+      res.status(404).json('Could not delete Item.')
+  })
 })
 
 app.listen(port, ()=> {
