@@ -1,33 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { Routes, Route, Link, useNavigate} from 'react-router-dom';
+import All from './components/All';
+import './App.css';
+import ChangeContext from './components/ChangeContext.jsx';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const navigate = useNavigate();
+  const [change, setChange] = useState(false);
+  const value = { change, setChange };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <ChangeContext.Provider value={value}>
+      <h1>Store Front</h1>
+      <nav>
+        <button onClick={() => navigate('/')}>All Items</button>
+        <button onClick={() => navigate('/')}>Meat</button>
+        <button onClick={() => navigate('/')}>Produce</button>
+        <button onClick={() => navigate('/')}>Dairy</button>
+      </nav>
+      <Routes>
+        <Route path='/' element={<All/>}/>
+        {/* <Route path='/dog' element={<Dog/>}/> */}
+        {/* <Route path='/color-list' element={<ColorList/>}/> */}
+        {/* <Route path='/pokemon-demo/*' element={<PokemonDemo/>}/> */}
+      </Routes>
+    </ChangeContext.Provider>
     </>
   )
 }

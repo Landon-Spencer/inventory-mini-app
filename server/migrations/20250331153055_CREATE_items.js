@@ -8,6 +8,7 @@ exports.up = function(knex) {
     table.string('name').notNullable();
     table.integer('department_id');
     table.foreign('department_id').references('departments.id');
+    table.integer('inventory');
     table.timestamps(true, true);
   });
 };
